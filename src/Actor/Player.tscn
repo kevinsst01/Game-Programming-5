@@ -1,0 +1,107 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://assets/characters.png" type="Texture" id=1]
+[ext_resource path="res://src/Actor/Player.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=9]
+atlas = ExtResource( 1 )
+region = Rect2( 160, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 1 )
+region = Rect2( 192, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 448, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 1 )
+region = Rect2( 480, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 1 )
+region = Rect2( 512, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 1 )
+region = Rect2( 544, 32, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ SubResource( 1 ) ],
+"loop": false,
+"name": "idle",
+"speed": 0.0
+}, {
+"frames": [ SubResource( 9 ) ],
+"loop": false,
+"name": "jump",
+"speed": 1.0
+}, {
+"frames": [ SubResource( 10 ) ],
+"loop": false,
+"name": "fall",
+"speed": 1.0
+}, {
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"loop": true,
+"name": "run",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 5.8294, 10.3985 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 6.2766, 10.7627 )
+
+[node name="Player" type="KinematicBody2D"]
+position = Vector2( 121.036, 120.977 )
+collision_mask = 14
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -16 )
+frames = SubResource( 2 )
+animation = "run"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0.573065, -10.3917 )
+shape = SubResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+visible = false
+current = true
+limit_left = 0
+limit_top = 0
+limit_right = 3520
+limit_bottom = 770
+limit_smoothed = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_speed = 9.0
+offset_v = -1.0
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.16
+editor_draw_drag_margin = true
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+visible = false
+collision_mask = 18
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+visible = false
+modulate = Color( 0.780392, 0.854902, 0.121569, 1 )
+position = Vector2( 0.573065, -10.6413 )
+shape = SubResource( 4 )
+
+[connection signal="area_entered" from="PlayerDetector" to="." method="_on_PlayerDetector_area_entered"]
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_PlayerDetector_body_entered"]
